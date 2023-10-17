@@ -14,7 +14,7 @@ import { Textarea } from "@/components/ui/textarea"
 import SubmitError from "@/components/SubmitError";
 
 import {URL} from "@/Models/url";
-import {useState} from "react";
+import React, {SetStateAction, useState} from "react";
 
 const formSchema = z.object({
     english: z.string().min(2, {
@@ -49,7 +49,7 @@ async function submitEntry(data : {english: string, creole: string}){
     console.log(response)
     return response.status === 200;
 }
-const TranslateForm = ({setOpen, setFormSubmitted}) =>{
+const TranslateForm = (props: {setOpen : React.Dispatch<SetStateAction<boolean>>, setFormSubmitted : React.Dispatch<SetStateAction<boolean>>}) =>{
     const [isError, setIsError] = useState(false)
 
     const form = useForm<z.infer<typeof formSchema>>({
@@ -64,8 +64,8 @@ const TranslateForm = ({setOpen, setFormSubmitted}) =>{
     function onSave(values: z.infer<typeof formSchema>){
         submitEntry(values).then((success:boolean) => {
             if(success){
-                setFormSubmitted(true)
-                setOpen(false)
+                props.setFormSubmitted(true)
+                props.setOpen(false)
             }
             else
                 setIsError(true)
@@ -73,7 +73,22 @@ const TranslateForm = ({setOpen, setFormSubmitted}) =>{
 
     }
 
-    function onEnter(event){
+    // function onEnter(event: React.FormEvent<HTMLInputElement>){
+    //     const value:string = event.target.value
+    //
+    //     if(value.length > 2){
+    //         const english: {text: string}  = {
+    //             text: value
+    //         }
+    //
+    //         translate(english).then((data : {translatedText: string}) => {
+    //             form.setValue('creole', data.translatedText)
+    //         })
+    //     }
+    // }
+
+    const handleBlur = (event: React.FocusEvent<HTMLTextAreaElement>) => {
+        console.log("hello world")
         const value:string = event.target.value
 
         if(value.length > 2){
@@ -88,7 +103,7 @@ const TranslateForm = ({setOpen, setFormSubmitted}) =>{
     }
 
 
-    const onCancel = () => setOpen(false)
+    const onCancel = () => props.setOpen(false)
 
 
     return (
@@ -103,7 +118,7 @@ const TranslateForm = ({setOpen, setFormSubmitted}) =>{
                         <FormItem>
                             <FormLabel>English</FormLabel>
                             <FormControl>
-                                <Textarea placeholder="Type English sentence here." {...field} onBlur={onEnter}>
+                                <Textarea placeholder="Type English sentence here." {...field} onBlur={(e) => handleBlur(e)}>
                                 </Textarea>
                             </FormControl>
                         </FormItem>

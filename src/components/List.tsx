@@ -1,18 +1,16 @@
 import {
     Table,
     TableBody,
-    TableCaption,
     TableCell,
     TableHead,
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import {Button} from "@/components/ui/button"
 
-import {useState, useEffect} from "react";
+import React, {useState, useEffect, SetStateAction} from "react";
 import type {Entry} from "../Models/Entry";
 import {URL} from "../Models/url"
-import EditForm from "@/components/Edit";
+import Edit from "@/components/Edit";
 import DeleteDialog from "@/components/DeleteDialog.tsx";
 
 
@@ -21,13 +19,13 @@ async function fetchEntries(): Promise<Entry[]> {
     return await response.json()
 }
 
-const List = ({formSubmitted, formUpdated, setFormUpdated}) => {
+const List = (props: {formSubmitted: boolean, formUpdated: boolean, setFormUpdated: React.Dispatch<SetStateAction<boolean>>}) => {
     const [entries, setEntries] = useState<Entry[]>([])
 
 
     useEffect(() => {
         fetchEntries().then(entries => setEntries(entries))
-    }, [formSubmitted, formUpdated])
+    }, [props.formSubmitted, props.formUpdated])
 
     return (
         <>
@@ -45,7 +43,7 @@ const List = ({formSubmitted, formUpdated, setFormUpdated}) => {
                             <TableCell className="text-left">{entry.english}</TableCell>
                             <TableCell className="text-left">{entry.creole}</TableCell>
                             <TableCell className="text-left">
-                                <EditForm entry={entry} setFormUpdated={setFormUpdated}></EditForm>
+                                <Edit entry={entry} setFormUpdated={props.setFormUpdated}></Edit>
                                 <DeleteDialog id = {entry.id}></DeleteDialog>
                             </TableCell>
                         </TableRow>

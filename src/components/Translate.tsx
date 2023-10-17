@@ -9,8 +9,8 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
-import {useState} from "react";
-const Translate = ({setFormSubmitted}) => {
+import React, {useState} from "react";
+const Translate = (props : {setFormSubmitted : React.Dispatch<boolean>}) => {
     let [open, setOpen] = useState(false)
     return (
         <Dialog open={open} onOpenChange={setOpen}>
@@ -24,7 +24,7 @@ const Translate = ({setFormSubmitted}) => {
                         Add new translation here. Click save when you're done.
                     </DialogDescription>
                 </DialogHeader>
-                <TranslateForm setOpen={setOpen} setFormSubmitted={setFormSubmitted}></TranslateForm>
+                <TranslateForm setOpen={setOpen} setFormSubmitted={props.setFormSubmitted}></TranslateForm>
             </DialogContent>
         </Dialog>
     )

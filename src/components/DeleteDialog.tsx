@@ -11,9 +11,9 @@ import {
 } from "@/components/ui/alert-dialog"
 import { Button } from "@/components/ui/button"
 
-const DeleteDialog = ({id}) => {
+const DeleteDialog = (props : {id: number}) => {
     const deleteAction = () => {
-        console.log("deleted entry " + id)
+        console.log("deleted entry " + props.id)
     }
     return (
         <AlertDialog>

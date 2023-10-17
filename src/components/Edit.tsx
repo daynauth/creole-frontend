@@ -8,9 +8,10 @@ import {
 } from "@/components/ui/dialog.tsx";
 import {Button} from "@/components/ui/button.tsx";
 import EditForm from "@/components/EditForm.tsx";
-import {useState} from "react";
+import React, {SetStateAction, useState} from "react";
+import {Entry} from "@/Models/Entry.tsx";
 
-const Edit = ({entry, setFormUpdated}) => {
+const Edit = (props : {entry: Entry, setFormUpdated: React.Dispatch<SetStateAction<boolean>>}) => {
     let [open, setOpen] = useState(false)
     return (
         <Dialog open={open} onOpenChange={setOpen}>
@@ -24,7 +25,7 @@ const Edit = ({entry, setFormUpdated}) => {
                         Edit your translation. Click Update when done.
                     </DialogDescription>
                 </DialogHeader>
-                <EditForm setOpen={setOpen} entry={entry} setFormUpdated={setFormUpdated}></EditForm>
+                <EditForm setOpen={setOpen} entry={props.entry} setFormUpdated={props.setFormUpdated}></EditForm>
             </DialogContent>
         </Dialog>
     )

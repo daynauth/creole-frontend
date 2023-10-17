@@ -1,9 +1,9 @@
-import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert.tsx";
-function submitSuccess({status}){
+import {Alert, AlertDescription} from "@/components/ui/alert.tsx";
+function submitSuccess(props: {status: string}){
     return (
         <Alert>
             <AlertDescription>
-                Entry was {status}
+                Entry was {props.status}
             </AlertDescription>
         </Alert>
     )

@@ -6,7 +6,7 @@ import {Button} from "@/components/ui/button"
 import {Form, FormControl, FormField, FormItem, FormLabel,} from "@/components/ui/form"
 import {Textarea} from "@/components/ui/textarea"
 import {Entry} from "@/Models/Entry.tsx";
-import {useState} from "react";
+import React, {SetStateAction, useState} from "react";
 import SubmitError from "@/components/SubmitError.tsx";
 import {URL} from "@/Models/url";
 
@@ -29,36 +29,36 @@ async function update(data: Entry){
     })
 }
 
-const EditForm = ({entry, setOpen, setFormUpdated}) => {
+const EditForm = (props: {entry: Entry, setOpen : React.Dispatch<SetStateAction<boolean>>, setFormUpdated: React.Dispatch<SetStateAction<boolean>>}) => {
     const [isError, setIsError] = useState(false)
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues:{
-            english: entry.english,
-            creole: entry.creole,
+            english: props.entry.english,
+            creole: props.entry.creole,
         }
     })
 
     function onUpdate(values: z.infer<typeof formSchema>){
         const data: Entry = {
-            id: entry.id,
+            id: props.entry.id,
             english: values.english,
             creole: values.creole,
-            created_at: entry.created_at
+            created_at: props.entry.created_at
         }
 
         update(data).then(response =>{
             if(response.status === 200){
-                setFormUpdated(true)
-                setOpen(false)
+                props.setFormUpdated(true)
+                props.setOpen(false)
             }else{
                 setIsError(true)
             }
         })
     }
 
-    const onCancel = () => setOpen(false)
+    const onCancel = () => props.setOpen(false)
 
     return (
         <Form {...form}>
