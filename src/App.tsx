@@ -1,41 +1,33 @@
 import './App.css'
-import List from "./components/List"
-import Translate from "./components/Translate.tsx";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
-import {useState} from "react";
-import SubmitSuccess from "@/components/SubmitSuccess.tsx";
+
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+
+import Main from "./Pages/Main"
+import Bulk from "./Pages/Bulk"
+import Generate from "./Pages/Generate"
+import NavBar from "@/components/NavBar"
 
 
 function App() {
-    const [formSubmitted, setFormSubmitted] = useState(false)
-    const [formUpdated, setFormUpdated] = useState(false)
-    const [entryDeleted, setEntryDeleted] = useState(false)
 
 
 
-  return (
-      <Card className="w-[800px]">
-        <CardHeader>
-            <CardTitle>List of Entries</CardTitle>
-            <CardContent>
-                {formSubmitted && <SubmitSuccess status={"Submitted"}></SubmitSuccess>}
-                {formUpdated && <SubmitSuccess status={"Updated"}></SubmitSuccess>}
-            </CardContent>
-            <CardContent className="flex content-normal">
-                <Translate setFormSubmitted={setFormSubmitted}></Translate>
-            </CardContent>
-        </CardHeader>
-        <CardContent>
-          <List formSubmitted={formSubmitted} formUpdated={formUpdated} setFormUpdated={setFormUpdated} entryDeleted={entryDeleted} setEntryDeleted={setEntryDeleted}></List>
-        </CardContent>
-      </Card>
+    return (
+        <div className="w-full">
+            <NavBar></NavBar>
+            <Router>
+                <Routes>
+                    <Route index element={<Main />}></Route>
+                    <Route path="/translate" element={<Main />}></Route>
+                    <Route path="/bulk" element={<Bulk></Bulk>}></Route>
+                    <Route path="/generate" element={<Generate></Generate>}></Route>
+                </Routes>
+            </Router>
 
-  )
+        </div>
+
+
+    )
 }
 
 export default App
