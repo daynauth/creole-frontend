@@ -14,6 +14,7 @@ import SubmitSuccess from "@/components/SubmitSuccess.tsx";
 function App() {
     const [formSubmitted, setFormSubmitted] = useState(false)
     const [formUpdated, setFormUpdated] = useState(false)
+    const [entryDeleted, setEntryDeleted] = useState(false)
 
 
 
@@ -30,7 +31,7 @@ function App() {
             </CardContent>
         </CardHeader>
         <CardContent>
-          <List formSubmitted={formSubmitted} formUpdated={formUpdated} setFormUpdated={setFormUpdated}></List>
+          <List formSubmitted={formSubmitted} formUpdated={formUpdated} setFormUpdated={setFormUpdated} entryDeleted={entryDeleted} setEntryDeleted={setEntryDeleted}></List>
         </CardContent>
       </Card>
 

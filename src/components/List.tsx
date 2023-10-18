@@ -19,13 +19,20 @@ async function fetchEntries(): Promise<Entry[]> {
     return await response.json()
 }
 
-const List = (props: {formSubmitted: boolean, formUpdated: boolean, setFormUpdated: React.Dispatch<SetStateAction<boolean>>}) => {
+const List = (props: {
+    formSubmitted: boolean,
+    formUpdated: boolean,
+    setFormUpdated: React.Dispatch<SetStateAction<boolean>>,
+    entryDeleted: boolean,
+    setEntryDeleted: React.Dispatch<SetStateAction<boolean>>}) => {
+
     const [entries, setEntries] = useState<Entry[]>([])
 
 
     useEffect(() => {
         fetchEntries().then(entries => setEntries(entries))
-    }, [props.formSubmitted, props.formUpdated])
+
+    }, [props.formSubmitted, props.formUpdated, props.entryDeleted])
 
     return (
         <>
@@ -44,7 +51,7 @@ const List = (props: {formSubmitted: boolean, formUpdated: boolean, setFormUpdat
                             <TableCell className="text-left">{entry.creole}</TableCell>
                             <TableCell className="text-left">
                                 <Edit entry={entry} setFormUpdated={props.setFormUpdated}></Edit>
-                                <DeleteDialog id = {entry.id}></DeleteDialog>
+                                <DeleteDialog id = {entry.id} setEntryDeleted={props.setEntryDeleted}></DeleteDialog>
                             </TableCell>
                         </TableRow>
                     ))

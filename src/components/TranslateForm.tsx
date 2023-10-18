@@ -38,7 +38,6 @@ async function translate(value: {text: string}){
 }
 
 async function submitEntry(data : {english: string, creole: string}){
-    console.log(data)
     const response = await fetch(URL + 'entries/add/', {
         method: 'POST',
         headers:{
@@ -51,6 +50,7 @@ async function submitEntry(data : {english: string, creole: string}){
 }
 const TranslateForm = (props: {setOpen : React.Dispatch<SetStateAction<boolean>>, setFormSubmitted : React.Dispatch<SetStateAction<boolean>>}) =>{
     const [isError, setIsError] = useState(false)
+    const [translating, setTranslating] = useState(false)
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -62,7 +62,9 @@ const TranslateForm = (props: {setOpen : React.Dispatch<SetStateAction<boolean>>
 
 
     function onSave(values: z.infer<typeof formSchema>){
+
         submitEntry(values).then((success:boolean) => {
+
             if(success){
                 props.setFormSubmitted(true)
                 props.setOpen(false)
@@ -73,35 +75,25 @@ const TranslateForm = (props: {setOpen : React.Dispatch<SetStateAction<boolean>>
 
     }
 
-    // function onEnter(event: React.FormEvent<HTMLInputElement>){
-    //     const value:string = event.target.value
-    //
-    //     if(value.length > 2){
-    //         const english: {text: string}  = {
-    //             text: value
-    //         }
-    //
-    //         translate(english).then((data : {translatedText: string}) => {
-    //             form.setValue('creole', data.translatedText)
-    //         })
-    //     }
-    // }
-
     const handleBlur = (event: React.FocusEvent<HTMLTextAreaElement>) => {
-        console.log("hello world")
+        setTranslating(true)
         const value:string = event.target.value
 
         if(value.length > 2){
+
             const english: {text: string}  = {
                 text: value
             }
 
             translate(english).then((data : {translatedText: string}) => {
+                setTranslating(false)
                 form.setValue('creole', data.translatedText)
             })
         }
     }
 
+
+    let placeholder = translating ? "translating..." : "Creole Translation goes here"
 
     const onCancel = () => props.setOpen(false)
 
@@ -130,7 +122,7 @@ const TranslateForm = (props: {setOpen : React.Dispatch<SetStateAction<boolean>>
                         <FormItem>
                             <FormLabel>Creole</FormLabel>
                             <FormControl>
-                                <Textarea placeholder="Creole Translation goes here" {...field} >
+                                <Textarea placeholder={placeholder} {...field} >
                                 </Textarea>
                             </FormControl>
                         </FormItem>

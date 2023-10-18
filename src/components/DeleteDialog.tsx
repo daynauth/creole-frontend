@@ -10,10 +10,28 @@ import {
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import { Button } from "@/components/ui/button"
+import {URL} from "@/Models/url"
+import React, {SetStateAction} from "react";
 
-const DeleteDialog = (props : {id: number}) => {
+async function deleteEntry(id: Number) {
+    return await fetch(URL + "entries/delete/" + id, {
+        method: 'DELETE'
+    })
+}
+
+
+const DeleteDialog = (props : {id: number, setEntryDeleted: React.Dispatch<SetStateAction<boolean>>}) => {
     const deleteAction = () => {
-        console.log("deleted entry " + props.id)
+        props.setEntryDeleted(false)
+        deleteEntry(props.id).then((response) => {
+                if(response.status === 200){
+                    props.setEntryDeleted(true)
+                }
+                else{
+                    //show an error
+                }
+            }
+        )
     }
     return (
         <AlertDialog>
