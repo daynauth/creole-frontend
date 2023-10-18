@@ -10,7 +10,7 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog"
 import React, {useState} from "react";
-const Translate = (props : {setFormSubmitted : React.Dispatch<boolean>}) => {
+const Translate = (props : {setFormSubmitted : React.Dispatch<React.SetStateAction<boolean>>}) => {
     let [open, setOpen] = useState(false)
     return (
         <Dialog open={open} onOpenChange={setOpen}>
